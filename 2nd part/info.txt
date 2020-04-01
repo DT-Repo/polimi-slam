@@ -1,0 +1,24 @@
+829080 D'introno Francesco
+
+The archive consists of the src/car_loc.cpp node to compute odometry /OdomProject from the bag's values and of the launch file which initializes the Odom node, EKF node and navsat node.
+EKF and navsat nodes are taken from robot_localization_tutorial.
+
+To compute the localization of the car, 1) play the bag by using ' rosbag play --clock project.bag ' .
+Then 2) start the launch file by using ' roslaunch project-ros2 localization_car.launch ' .
+
+In the launch file,first of all it's set up 'use_sim_time=yes' to use clock published by the bag. 
+Then it's launched odometry node and complementary_filter node. Complementary filter node subscribes to /swiftnav/rear/imu by means of the <remap from="/imu/data_raw" to="/swiftnav/rear/imu"/>.
+The next step is to fuse computated odometry and imu data by using EKF node(robot_localization) .For this goal it's added the odometry /OdomProject and imu data(/imu/data) following EKF node's rule, in fact it's used ' <param name="odom0" value="/OdomProject"/> '  and  '<param name="imu0" value="/imu/data"/> '.
+
+Process_noise_covariance and initial_estimate_covariance matrices are taken from robot_localization_tutorial package.
+The last step is to integrate GPS data from bag, /swiftnav/rear/gps, with odometry filtered from ekf node by means of navsat_transform_node.
+It's used <remap from="/gps/fix" to="/swiftnav/rear/gps"/> to subscribe directly to gps topic of the bag.
+Important parameter is <param name="use_odometry_yaw" value="true"/>, to take heading from odometry filtered.
+Other parameters are taken from  "project-ros2/params/navsat_transform_param.yaml" as GPS output frequency(30Hz) magnetic_declination_radians: 0.04868099 calculated by using longitude and latitude of Milan and a calculator of magnetic_declination (longitude:9.1859243 and latitude:45.4654219,   " https://www.ngdc.noaa.gov/geomag/calculators/magcalc.shtml ").
+
+
+I have added a screenshot to view /gps/filtered on the map by using mapviz.
+I have neither added covariance editing the bag nor used other values from piksy's record.
+I have even added a screenshot about rqt_graph and tf_tree in project-ros2/img.
+ 
+
