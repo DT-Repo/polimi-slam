@@ -1,4 +1,17 @@
 # polimi-slam 1st project
+
+- Compute two different odometry:
+1. using *Differential Drive Kinematics*
+2. using *Ackerman model*
+
+and publish both as *tf* and *odom* topic.
+
+- Use dynamic reconfigure to switch between different published
+odometry
+- Use dynamic reconfigure to reset the odometry to (0,0) or to set to a
+specific starting point (x,y)
+
+# Solution
 The directory **1st part** contains:
 - the subscriber/publisher node src/sub_car.ccp
 -  the custom mesage msg/dtOdom.msg 
@@ -10,7 +23,7 @@ and then select odomtype Differential_Drive (choice 0) or Ackermann(choice 1).
 Instead to change init values of position you can select init_value_x and init_value_y in a range of (0,0) - (100,100);
 
 The structure of tf tree is composed by (odom_DDK)-->(car) for Differential Drive Model
-instead for Ackerman model (odom_ACK)-->(car). The Broadcaster is the same i.e. /sub_car.   (World-Fixed) ---> (Robot-Fixed)
+instead for Ackerman model (odom_ACK)-->(car). The Broadcaster is the same i.e. `/sub_car`.   (World-Fixed) ---> (Robot-Fixed)
 
 The custom message used for the odometry is dtOdom, which is based on nav_msgs/Odometry as a matter of fact it's composed by a std_msgs/Header, string child_frame_id, geometry_msgs/PoseWithCovariance and geometry_msgs/TwistWithCovariance.
 
@@ -18,8 +31,8 @@ The custom message used for the odometry is dtOdom, which is based on nav_msgs/O
 - Init roscore and play the bag publishing speedL_stamped, speedR_stamped and steer_stamped.
 - run the node sub_car.cpp : `rosrun progetto_ROS sub_car`.  
 - Launch the dynamc reconfigure tool `rosrun rqt_reconfigure rqt_reconfigure`
-to switch between Differential Drive and Ackerman Odometries or to reset initial position (init_value_x, init_value_y) to a (0,0)-(100,100).
-(Only the odometry selected will publish values).
+to switch between Differential Drive and Ackerman Odometries or to reset initial position `(init_value_x, init_value_y)` to a `(0,0)-(100,100)`.
+(Only the selected odometry will publish values).
 - To see published values select an Odometry and run `rostopic echo /OdometryDDK` or `rostopic echo /OdometryACK`.
 - To see tf tree, instead, run `rosrun rqt_tf_tree rqt_tf_tree` while for the
 vector transformations run `rviz` and add TF and select odom_DDK (or odom_ACK) as Fixed Frame.
