@@ -1,6 +1,9 @@
 # polimi-slam 2nd project
 
 Compute accurate and high frequency GPS position fusing:
+
+![This is an image](https://github.com/DT-Repo/polimi-slam/blob/master/2nd%20part/img/Board.png)
+
 - Odometry
 (from
 wheels
@@ -8,6 +11,7 @@ encoders and steering angle)
 - IMU (Piksi Multi board)
 - GPS (Piksi Multi board) <br/>
 
+## Solution
 The archive contains:
 - src/car_loc.cpp node to compute odometry /OdomProject from the bag's values.
 - launch file which initializes the Odom node, EKF node and navsat node.
@@ -28,3 +32,8 @@ An Important parameter is `<param name="use_odometry_yaw" value="true"/>`, to ta
 Other parameters are taken from `project-ros2/params/navsat_transform_param.yaml` as :
 - *GPS output frequency* : 30Hz 
 - *magnetic_declination_radians* : 0.04868099 calculated by using longitude and latitude of Milan and a calculator of magnetic_declination (*longitude* : 9.1859243 and *latitude* : 45.4654219, https://www.ngdc.noaa.gov/geomag/calculators/magcalc.shtml).
+## RQT_GRAPH
+![This is an image](https://github.com/DT-Repo/polimi-slam/blob/master/2nd%20part/img/rqt_graph_crop.png)
+
+## Mapviz Sensor Fused-Trajectory Visualization:
+![This is an image](https://github.com/DT-Repo/polimi-slam/blob/master/2nd%20part/img/localization_mapviz.png)
